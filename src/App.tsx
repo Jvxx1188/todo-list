@@ -1,9 +1,8 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import { CSSProperties, useEffect, useState } from "react";
-import { Draggable, Droppable, OnDragEndResponder } from "react-beautiful-dnd";
+import { Draggable, Droppable, DragDropContext, OnDragEndResponder } from "react-beautiful-dnd";
 import { TaskComponent } from "./Components/task-component";
 import { taskManager, tasksInterface } from "./lib/task-manager";
-
+import { Button } from "./components/ui/button";
 function App() {
 
   const [tasks] = useState(taskManager.loadTask())
@@ -22,64 +21,61 @@ function App() {
     taskManager.saveTask(tasks)
   }
 
-}
-return (
-  <div
-    id="app"
-    className="relative flex flex-col p-2 bg-slate-700 h-screen overflow-x-hidden"
-  >
-    <header className="p-3">
-      <h1 className="text-3xl text-white font-bold">Suas notas</h1>
-    </header>
-    <main className="flex-1 w-full h-full">
-      <DragDropContext onDragEnd={OnSomeTaskChangesPosition}>
+
+  return (
+    <div
+      id="app"
+      className="relative flex flex-col p-2 bg-slate-700 h-screen overflow-x-hidden"
+    >
+      <header className="p-3">
+        <h1 className="text-3xl text-white font-bold">Suas notas</h1>
+      </header>
+      <main className="flex-1 w-full h-full">
+        <DragDropContext onDragEnd={OnSomeTaskChangesPosition}>
 
 
 
-        <Droppable droppableId="Droppable">
-          {
-            (provided) => (
-              <div
-                className="bg-slate-100 p-3 rounded-2 h-full"
+          <Droppable droppableId="Droppable">
+            {
+              (provided) => (
+                <div
+                  className="bg-slate-100 p-3 rounded-2 h-full"
 
 
-                ref={provided.innerRef} {...provided.droppableProps}   >
+                  ref={provided.innerRef} {...provided.droppableProps}   >
 
-                {
-                  tasks.map((task, index) => (
+                  {
+                    tasks.map((task, index) => (
 
-                    <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
-                      {
-                        (provided) =>
-
-
-
-                          <TaskComponent provided={provided} content={task.content} />
+                      <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+                        {
+                          (provided) =>
 
 
-                      }
+
+                            <TaskComponent provided={provided} content={task.content} />
 
 
-                    </Draggable>
-                  )
-                  )
-                }
-                {provided.placeholder}
+                        }
 
-              </div>
-            )
-          }
-        </Droppable>
 
-      </DragDropContext>
-    </main>
+                      </Draggable>
+                    )
+                    )
+                  }
+                  {provided.placeholder}
 
-    <nav>
+                </div>
+              )
+            }
+          </Droppable>
 
-      < 
-        <input></input>
-    <button type="submit">add</button>
-    {/*aqui vai ter o botao de add, que vai ser um dialog*/}</nav>
+        </DragDropContext>
+      </main>
+
+      <nav>
+        <Button>aaaaa</Button>
+        {/*aqui vai ter o botao de add, que vai ser um dialog*/}</nav>
     </div >
   );
 }
