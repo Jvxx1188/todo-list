@@ -2,11 +2,12 @@ import { CSSProperties, useEffect, useState } from "react";
 import { Draggable, Droppable, DragDropContext, OnDragEndResponder } from "react-beautiful-dnd";
 import { TaskComponent } from "./Components/task-component";
 import { taskManager, tasksInterface } from "./lib/task-manager";
-import { Button } from "./components/ui/button";
 import { AddContent } from "./Components/add-content";
+import uuid from "react-uuid";
+
 function App() {
 
-  const [tasks] = useState(taskManager.loadTask())
+  const [tasks, setTask] = useState(taskManager.loadTask())
 
   const OnSomeTaskChangesPosition: OnDragEndResponder = (a) => {
     const { destination } = a;
@@ -21,21 +22,28 @@ function App() {
     tasks.splice(destination.index, 0, theTask)
     taskManager.saveTask(tasks)
   }
-  const AddTask(value: string){
+  const AddTask = (value: string) => {
     const newTask: tasksInterface = {
-      id: generateU
-    }    tasks.push()
+      id: uuid()
+      , content: value,
+      isCompleted: false
+    }
+    console.log("task adicionada")
+    const newtask = [...tasks]
+    newtask.unshift(newTask)
+    setTask(newtask)
+    taskManager.saveTask(newtask)
   }
 
   return (
     <div
       id="app"
-      className="relative flex flex-col p-2 bg-slate-700 h-screen overflow-x-hidden"
+      className=" antialiased  relative flex flex-col bg-[#E57176] h-screen overflow-x-hidden"
     >
-      <header className="p-3">
-        <h1 className="text-3xl text-white font-bold">Suas notas</h1>
+      <header className="p-3 bg-[#F2A0A4] shadow-md">
+        <h1 className="text-3xl text-gray-700 text-center font-bold">To Do 📝</h1>
       </header>
-      <main className="flex-1 w-full h-full">
+      <main className="flex-1 p-2 w-full max-w-96 h-full mx-auto">
         <DragDropContext onDragEnd={OnSomeTaskChangesPosition}>
 
 
@@ -44,7 +52,7 @@ function App() {
             {
               (provided) => (
                 <div
-                  className="bg-slate-100 p-3 rounded-2 h-full"
+                  className=" p-3 rounded-2 h-full flex flex-col"
 
 
                   ref={provided.innerRef} {...provided.droppableProps}   >
@@ -68,7 +76,6 @@ function App() {
                     )
                     )
                   }
-                  {provided.placeholder}
 
                 </div>
               )
@@ -79,7 +86,7 @@ function App() {
       </main>
 
       <nav>
-        <AddContent />
+        <AddContent onButtonClick={AddTask} />
 
         {/*aqui vai ter o botao de add, que vai ser um dialog*/}</nav>
     </div >
