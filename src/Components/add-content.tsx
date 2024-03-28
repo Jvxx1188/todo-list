@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogHeader, DialogContent, DialogPortal, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogHeader, DialogContent, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
 interface addContentInterface {

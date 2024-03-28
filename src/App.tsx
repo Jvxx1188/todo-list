@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { useState } from "react";
 import { Draggable, Droppable, DragDropContext, OnDragEndResponder } from "react-beautiful-dnd";
 import { TaskComponent } from "./Components/task-component";
 import { taskManager, tasksInterface } from "./lib/task-manager";
