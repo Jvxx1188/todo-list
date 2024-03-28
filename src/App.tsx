@@ -3,6 +3,7 @@ import { Draggable, Droppable, DragDropContext, OnDragEndResponder } from "react
 import { TaskComponent } from "./Components/task-component";
 import { taskManager, tasksInterface } from "./lib/task-manager";
 import { Button } from "./components/ui/button";
+import { AddContent } from "./Components/add-content";
 function App() {
 
   const [tasks] = useState(taskManager.loadTask())
@@ -20,7 +21,11 @@ function App() {
     tasks.splice(destination.index, 0, theTask)
     taskManager.saveTask(tasks)
   }
-
+  const AddTask(value: string){
+    const newTask: tasksInterface = {
+      id: generateU
+    }    tasks.push()
+  }
 
   return (
     <div
@@ -74,7 +79,8 @@ function App() {
       </main>
 
       <nav>
-        <Button>aaaaa</Button>
+        <AddContent />
+
         {/*aqui vai ter o botao de add, que vai ser um dialog*/}</nav>
     </div >
   );
