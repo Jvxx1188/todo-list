@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Draggable, Droppable, DragDropContext, OnDragEndResponder } from "react-beautiful-dnd";
 import { TaskComponent } from "./Components/task-component";
 import { taskManager, tasksInterface } from "./lib/task-manager";
 import { AddContent } from "./Components/add-content";
 import uuid from "react-uuid";
+import { toast } from "./components/ui/use-toast";
+import gsap from "gsap";
 
 function App() {
 
   const [tasks, setTask] = useState(taskManager.loadTask())
-
+  const Header = useRef(null)
   const OnSomeTaskChangesPosition: OnDragEndResponder = (a) => {
     const { destination } = a;
     const { index } = a.source;
@@ -34,16 +36,43 @@ function App() {
     setTask(newtask)
     taskManager.saveTask(newtask)
   }
+  const setActiveTask = (taskId: string) => {
+    tasks.map((task) => {
+      if (task.id == taskId) {
+        task.isCompleted = !task.isCompleted;
+        console.log(task.isCompleted)
+        const newtask = [...tasks]
+        setTask(newtask)
+        taskManager.saveTask(newtask)
+      }
+    })
+
+  }
+
+  useEffect(() => {
+
+    toast({ title: "Tasks concluídas são DELETADAS ao reiniciar a página" })
+    console.log('aa')
+    gsap.fromTo(Header.current, {
+      opacity: 0,
+      y: -50
+    },
+      {
+        opacity: 1
+        ,
+        y: 0
+      })
+  }, [])
 
   return (
-    <div
+    <div ref={Header}
       id="app"
-      className=" antialiased  relative flex flex-col bg-[#E57176] h-screen overflow-x-hidden"
+      className=" antialiased  relative flex flex-col items-center  h-screen overflow-x-hidden"
     >
-      <header className="p-3 bg-[#F2A0A4] shadow-md">
+      <header className="w-full select-none p-3 bg-[#F2A0A4] shadow-md">
         <h1 className="text-3xl text-gray-700 text-center font-bold">To Do 📝</h1>
       </header>
-      <main className="flex-1 p-2 w-full max-w-96 h-full mx-auto">
+      <main className="flex-1 p-2 w-full max-w-[600px] h-full overflow-y-scroll">
         <DragDropContext onDragEnd={OnSomeTaskChangesPosition}>
 
 
@@ -66,7 +95,7 @@ function App() {
 
 
 
-                            <TaskComponent provided={provided} content={task.content} />
+                            <TaskComponent setActiveTask={setActiveTask} task={task} provided={provided} content={task.content} />
 
 
                         }
